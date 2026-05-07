@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install pdo pdo_mysql gd \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Fix MPM conflict - disable all MPMs first, then enable only prefork
+# Disable ALL MPMs explicitly, then enable only prefork + rewrite in one layer
 RUN a2dismod mpm_event mpm_worker mpm_prefork 2>/dev/null || true \
     && a2enmod mpm_prefork \
     && a2enmod rewrite
