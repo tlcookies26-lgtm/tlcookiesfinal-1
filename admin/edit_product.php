@@ -52,9 +52,7 @@ if (isset($_POST['update_product'])) {
     $name = filter_var(trim($_POST['name']), FILTER_SANITIZE_SPECIAL_CHARS);
     $price = filter_var(trim($_POST['price']), FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
     $description = filter_var(trim($_POST['description']), FILTER_SANITIZE_SPECIAL_CHARS);
-    $ingredients = filter_var(trim($_POST['ingredients']), FILTER_SANITIZE_SPECIAL_CHARS);
     $benefits = filter_var(trim($_POST['benefits']), FILTER_SANITIZE_SPECIAL_CHARS);
-    $steps = filter_var(trim($_POST['steps']), FILTER_SANITIZE_SPECIAL_CHARS);
     $image_path = $product['images']; // Keep existing image by default
 
     // Handle image upload
@@ -89,8 +87,8 @@ if (isset($_POST['update_product'])) {
     }
 
     // Update product
-    $update = $conn->prepare("UPDATE products SET name = ?, price = ?, description = ?, ingredients = ?, benefits = ?, steps = ?, images = ? WHERE id = ?");
-    $update->execute([$name, $price, $description, $ingredients, $benefits, $steps, $image_path, $pid]);
+    $update = $conn->prepare("UPDATE products SET name = ?, price = ?, description = ?, benefits = ?, images = ? WHERE id = ?");
+    $update->execute([$name, $price, $description, $benefits, $image_path, $pid]);
 
     // Redirect with success message
     header("Location: view_products.php?success_msg=" . urlencode("Cookie updated successfully! 🍪"));

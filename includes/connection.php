@@ -49,9 +49,7 @@ try {
         id INT AUTO_INCREMENT PRIMARY KEY,
         name VARCHAR(100) NOT NULL,
         description TEXT NOT NULL,
-        ingredients TEXT NOT NULL,
         benefits TEXT NOT NULL,
-        steps TEXT NOT NULL,
         price DECIMAL(10,2) NOT NULL CHECK (price >= 0),
         images TEXT NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP

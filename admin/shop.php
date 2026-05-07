@@ -39,8 +39,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_product'])) {
     $price = filter_var(trim($_POST['price']), FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
     $description = filter_var(trim($_POST['description']), FILTER_SANITIZE_SPECIAL_CHARS);
     $benefits = filter_var(trim($_POST['benefits']), FILTER_SANITIZE_SPECIAL_CHARS);
-    $ingredients = filter_var(trim($_POST['ingredients']), FILTER_SANITIZE_SPECIAL_CHARS);
-    $steps = filter_var(trim($_POST['steps'] ?? ''), FILTER_SANITIZE_SPECIAL_CHARS);
     $image_path = '';
 
     // Handle image upload
@@ -71,8 +69,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_product'])) {
 
     // Insert into database if all fields are filled
     if (!empty($name) && !empty($price) && !empty($description) && !empty($image_path)) {
-        $stmt = $conn->prepare("INSERT INTO products (name, price, description, ingredients, benefits, steps, images, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, NOW())");
-        $stmt->execute([$name, $price, $description, $ingredients, $benefits, $steps, $image_path]);
+        $stmt = $conn->prepare("INSERT INTO products (name, price, description, benefits, images, created_at) VALUES (?, ?, ?, ?, ?, NOW())");
+        $stmt->execute([$name, $price, $description, $benefits, $image_path]);
         $success_msg = 'Cookie added to shop successfully! 🍪';
         header("Location: view_products.php?success_msg=" . urlencode($success_msg));
         exit();
@@ -274,18 +272,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_product'])) {
             </div>
             
             <div class="form-section">
-                <label for="ingredients" class="required">Ingredients</label>
-                <textarea name="ingredients" id="ingredients" placeholder="List the ingredients used in this cookie..." required></textarea>
-            </div>
-            
-            <div class="form-section">
                 <label for="benefits" class="required">Why Customers Love It</label>
                 <textarea name="benefits" id="benefits" placeholder="What makes this cookie special?" required></textarea>
-            </div>
-
-            <div class="form-section">
-                <label for="steps">How It's Made (Steps)</label>
-                <textarea name="steps" id="steps" placeholder="Describe the baking steps (optional)..."></textarea>
             </div>
             
             <div class="form-section">
