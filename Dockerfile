@@ -16,6 +16,9 @@ RUN a2dismod mpm_event mpm_worker mpm_prefork 2>/dev/null || true \
     && a2enmod mpm_prefork \
     && a2enmod rewrite
 
+# Suppress the ServerName warning
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+
 # Set working directory
 WORKDIR /var/www/html
 
