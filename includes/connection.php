@@ -108,7 +108,7 @@ try {
 
     // ── Seed admin account ───────────────────────────────────────────────────
 
-    $admin_email    = 'tlcookies@gmail.com';
+    $admin_email    = 'tlcookies26@gmail.com';
     $admin_username = 'admin';
     $admin_password = '@tlc2026';
 
