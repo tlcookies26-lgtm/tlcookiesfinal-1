@@ -51,18 +51,15 @@ foreach ($products as $product) {
 if (isset($_GET['delete_order'])) {
     $delete_id = $_GET['delete_order'];
     
-    // Optional: Check if order exists before deleting
     $check_order = $conn->prepare("SELECT * FROM orders WHERE id = ?");
     $check_order->execute([$delete_id]);
     
     if ($check_order->rowCount() > 0) {
         $conn->prepare("DELETE FROM orders WHERE id = ?")->execute([$delete_id]);
-        $success_msg = "Order #$delete_id has been deleted successfully.";
+        header("Location: view_orders.php?success_msg=" . urlencode("Order #$delete_id has been deleted successfully."));
     } else {
-        $warning_msg = "Order not found.";
+        header("Location: view_orders.php?warning_msg=" . urlencode("Order not found."));
     }
-    
-    header("Location: view_orders.php?success_msg=" . urlencode($success_msg) . "&warning_msg=" . urlencode($warning_msg));
     exit();
 }
 
