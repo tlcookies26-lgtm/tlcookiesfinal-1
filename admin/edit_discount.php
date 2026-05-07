@@ -39,7 +39,6 @@ if (isset($_POST['update_discount'])) {
     $title = $_POST['title'];
     $description = $_POST['description'];
     $percentage = $_POST['discount_percentage'];
-    $category = $_POST['target_value'];
     $start_date = $_POST['start_date'];
     $end_date = $_POST['end_date'];
 
@@ -50,11 +49,11 @@ if (isset($_POST['update_discount'])) {
         $image_path = "uploads/discount_pictures/" . $image;
         move_uploaded_file($image_tmp, $image_path);
 
-        $update = $conn->prepare("UPDATE discounts SET title=?, description=?, discount_percentage=?, target_value=?, start_date=?, end_date=?, image=? WHERE id=?");
-        $update->execute([$title, $description, $percentage, $category, $start_date, $end_date, $image_path, $discount_id]);
+        $update = $conn->prepare("UPDATE discounts SET title=?, description=?, discount_percentage=?, start_date=?, end_date=?, image=? WHERE id=?");
+        $update->execute([$title, $description, $percentage, $start_date, $end_date, $image_path, $discount_id]);
     } else {
-        $update = $conn->prepare("UPDATE discounts SET title=?, description=?, discount_percentage=?, target_value=?, start_date=?, end_date=? WHERE id=?");
-        $update->execute([$title, $description, $percentage, $category, $start_date, $end_date, $discount_id]);
+        $update = $conn->prepare("UPDATE discounts SET title=?, description=?, discount_percentage=?, start_date=?, end_date=? WHERE id=?");
+        $update->execute([$title, $description, $percentage, $start_date, $end_date, $discount_id]);
     }
 
     header("Location: view_discount.php");
@@ -96,13 +95,10 @@ if (isset($_POST['update_discount'])) {
                     <div class="columns">
                         <strong>Title:</strong>
                         <strong>Discount Percentage:</strong>
-                        <strong>Category:</strong>
 
                         <input type="text" name="title" required value="<?= htmlspecialchars($discount['title'] ?? ''); ?>">
                         <input type="number" name="discount_percentage" required step="0.01" min="0"
                             value="<?= htmlspecialchars($discount['discount_percentage'] ?? ''); ?>">
-                        <input type="text" name="target_value" required
-                            value="<?= htmlspecialchars($discount['target_value'] ?? ''); ?>">
                     </div>
                 </div>
 
@@ -134,7 +130,7 @@ if (isset($_POST['update_discount'])) {
 
     .columns {
         display: grid;
-        grid-template-columns: repeat(3, auto);
+        grid-template-columns: repeat(2, auto);
         gap: 0px 20px;
     }
 

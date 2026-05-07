@@ -80,14 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_discount'])) {
     }
 }
 
-// Check if there's already an active discount (global, not category-specific)
-$today = date('Y-m-d');
-$active_discount_stmt = $conn->prepare("SELECT COUNT(*) FROM discounts WHERE end_date >= ?");
-$active_discount_stmt->execute([$today]);
-$active_discount_count = $active_discount_stmt->fetchColumn();
 
-// Determine if a new discount can be added (limit to one active discount at a time)
-$can_add_discount = ($active_discount_count == 0);
 
 ?>
 <?php $page = 'view_discount'; ?> <!-- Change per page -->
@@ -270,28 +263,6 @@ $can_add_discount = ($active_discount_count == 0);
             color: #555;
             line-height: 1.6;
         }
-        
-        /* Warning for no available discount slot */
-        .warning-message {
-            background: #fff3cd;
-            border: 2px solid #ffc107;
-            color: #856404;
-            padding: 2rem;
-            border-radius: 15px;
-            text-align: center;
-            margin: 2rem 0;
-        }
-        
-        .warning-message i {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-            display: block;
-        }
-        
-        .warning-message p {
-            font-size: 1.6rem;
-            margin-bottom: 1rem;
-        }
 
         @media (max-width: 768px) {
             .title2 {
@@ -322,23 +293,12 @@ $can_add_discount = ($active_discount_count == 0);
 
         <h2>Create a Store-Wide Discount</h2>
         
-        <!-- Discount Status Info -->
-        <?php if ($can_add_discount): ?>
         <div class="info-box">
             <h3><i class='bx bx-info-circle'></i> Global Discount</h3>
-            <p>This discount will apply to <strong>all cookies</strong> in your store. Only one active discount is allowed at a time.</p>
+            <p>This discount will apply to <strong>all cookies</strong> in your store.</p>
             <p style="margin-top: 1rem; color: var(--cookie-brown);">✨ Create a compelling offer to attract more customers!</p>
         </div>
-        <?php else: ?>
-        <div class="warning-message">
-            <i class='bx bx-error-circle'></i>
-            <p>There is already an active discount running!</p>
-            <p style="font-size: 1.4rem;">You can only have one active discount at a time. Wait for the current discount to expire or delete it to add a new one.</p>
-            <a href="view_discount.php" class="btn" style="margin-top: 1rem; display: inline-block;">Manage Existing Discounts</a>
-        </div>
-        <?php endif; ?>
 
-        <?php if ($can_add_discount): ?>
         <form method="POST" enctype="multipart/form-data">
             <div class="form-section">
                 <label for="title" style="color: var(--cookie-chocolate); font-weight: bold;">Discount Title</label>
@@ -373,7 +333,6 @@ $can_add_discount = ($active_discount_count == 0);
             
             <input type="submit" name="add_discount" value="Add Discount">
         </form>
-        <?php endif; ?>
     </div>
     
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
