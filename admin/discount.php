@@ -34,8 +34,8 @@ if (isset($_POST['logout'])) {
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_discount'])) {
     // Sanitize and validate inputs
-    $title = filter_var(trim($_POST['title']), FILTER_SANITIZE_STRING);
-    $description = filter_var(trim($_POST['description']), FILTER_SANITIZE_STRING);
+    $title = filter_var(trim($_POST['title']), FILTER_SANITIZE_SPECIAL_CHARS);
+    $description = filter_var(trim($_POST['description']), FILTER_SANITIZE_SPECIAL_CHARS);
     $discount_percentage = filter_var(trim($_POST['discount_percentage']), FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
     $start_date = $_POST['start_date'];
     $end_date = $_POST['end_date'];

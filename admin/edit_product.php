@@ -49,12 +49,12 @@ if (!$product) {
 
 // Handle update
 if (isset($_POST['update_product'])) {
-    $name = filter_var(trim($_POST['name']), FILTER_SANITIZE_STRING);
+    $name = filter_var(trim($_POST['name']), FILTER_SANITIZE_SPECIAL_CHARS);
     $price = filter_var(trim($_POST['price']), FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-    $description = filter_var(trim($_POST['description']), FILTER_SANITIZE_STRING);
-    $ingredients = filter_var(trim($_POST['ingredients']), FILTER_SANITIZE_STRING);
-    $benefits = filter_var(trim($_POST['benefits']), FILTER_SANITIZE_STRING);
-    $steps = filter_var(trim($_POST['steps']), FILTER_SANITIZE_STRING);
+    $description = filter_var(trim($_POST['description']), FILTER_SANITIZE_SPECIAL_CHARS);
+    $ingredients = filter_var(trim($_POST['ingredients']), FILTER_SANITIZE_SPECIAL_CHARS);
+    $benefits = filter_var(trim($_POST['benefits']), FILTER_SANITIZE_SPECIAL_CHARS);
+    $steps = filter_var(trim($_POST['steps']), FILTER_SANITIZE_SPECIAL_CHARS);
     $image_path = $product['images']; // Keep existing image by default
 
     // Handle image upload

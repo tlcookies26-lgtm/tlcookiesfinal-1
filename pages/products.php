@@ -35,7 +35,7 @@ if (isset($_POST['add_to_cart'])) {
         $id = unique_id();
         $product_id = $_POST['product_id'];
         $qty = $_POST['qty'];
-        $qty = filter_var($qty, FILTER_SANITIZE_STRING);
+        $qty = filter_var($qty, FILTER_SANITIZE_SPECIAL_CHARS);
 
         // Check if product exists
         $check_product = $conn->prepare("SELECT * FROM `products` WHERE id = ? LIMIT 1");

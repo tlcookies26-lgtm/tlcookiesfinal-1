@@ -35,10 +35,10 @@ if (isset($_POST['logout'])) {
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_product'])) {
     // Sanitize and validate inputs
-    $name = filter_var(trim($_POST['name']), FILTER_SANITIZE_STRING);
+    $name = filter_var(trim($_POST['name']), FILTER_SANITIZE_SPECIAL_CHARS);
     $price = filter_var(trim($_POST['price']), FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-    $description = filter_var(trim($_POST['description']), FILTER_SANITIZE_STRING);
-    $benefits = filter_var(trim($_POST['benefits']), FILTER_SANITIZE_STRING);
+    $description = filter_var(trim($_POST['description']), FILTER_SANITIZE_SPECIAL_CHARS);
+    $benefits = filter_var(trim($_POST['benefits']), FILTER_SANITIZE_SPECIAL_CHARS);
     $image_path = '';
 
     // Handle image upload

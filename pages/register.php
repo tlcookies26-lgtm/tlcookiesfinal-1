@@ -13,21 +13,21 @@ if (isset($_POST['submit'])) {
     $id = unique_id();
 
     // Sanitize inputs
-    $username = filter_var($_POST['username'], FILTER_SANITIZE_STRING);
+    $username = filter_var($_POST['username'], FILTER_SANITIZE_SPECIAL_CHARS);
     $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
     if (!$email) {
         echo "Invalid email format";
         exit;
     }
 
-    $pass = filter_var($_POST['pass'], FILTER_SANITIZE_STRING);
-    $cpass = filter_var($_POST['cpass'], FILTER_SANITIZE_STRING);
-    $surname = filter_var($_POST['surname'], FILTER_SANITIZE_STRING);
-    $first_name = filter_var($_POST['first_name'], FILTER_SANITIZE_STRING);
-    $middle_name = filter_var($_POST['middle_name'], FILTER_SANITIZE_STRING);
+    $pass = filter_var($_POST['pass'], FILTER_SANITIZE_SPECIAL_CHARS);
+    $cpass = filter_var($_POST['cpass'], FILTER_SANITIZE_SPECIAL_CHARS);
+    $surname = filter_var($_POST['surname'], FILTER_SANITIZE_SPECIAL_CHARS);
+    $first_name = filter_var($_POST['first_name'], FILTER_SANITIZE_SPECIAL_CHARS);
+    $middle_name = filter_var($_POST['middle_name'], FILTER_SANITIZE_SPECIAL_CHARS);
     $phone = preg_replace('/\D/', '', $_POST['phone']);
-    $barangay = filter_var($_POST['barangay'], FILTER_SANITIZE_STRING);
-    $address = filter_var($_POST['address'], FILTER_SANITIZE_STRING);
+    $barangay = filter_var($_POST['barangay'], FILTER_SANITIZE_SPECIAL_CHARS);
+    $address = filter_var($_POST['address'], FILTER_SANITIZE_SPECIAL_CHARS);
 
     // Check if password and confirm password match
     if ($pass !== $cpass) {
@@ -70,9 +70,9 @@ if (isset($_POST['submit'])) {
     $_SESSION['address'] = $address;
 
     $email = $_POST['email'];
-    $email = filter_var($email, FILTER_SANITIZE_STRING);
+    $email = filter_var($email, FILTER_SANITIZE_SPECIAL_CHARS);
     $pass = $_POST['pass'];
-    $pass = filter_var($pass, FILTER_SANITIZE_STRING);
+    $pass = filter_var($pass, FILTER_SANITIZE_SPECIAL_CHARS);
 
     $select_users = $conn->prepare("SELECT * FROM `users` WHERE email = ?");
     $select_users->execute([$email]);
