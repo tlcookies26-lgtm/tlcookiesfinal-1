@@ -45,6 +45,6 @@ RUN echo '<Directory /var/www/html>\n\
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
-EXPOSE 80
+EXPOSE 8080
 
 ENTRYPOINT ["docker-entrypoint.sh"]
