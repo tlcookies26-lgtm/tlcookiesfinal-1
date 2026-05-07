@@ -1,0 +1,112 @@
+<?php
+include '../includes/connection.php';
+session_start();
+
+if (isset($_SESSION['user_id'])) {
+    $user_id = $_SESSION['user_id'];
+    header('Location: admin.php');
+} else {
+    $user_id = '';
+}
+
+if (isset($_POST['submit'])) {
+    $email = $_POST['email'];
+    $email = filter_var($email, FILTER_SANITIZE_STRING);
+    $pass = $_POST['pass'];
+    $pass = filter_var($pass, FILTER_SANITIZE_STRING);
+
+    $select_user = $conn->prepare("SELECT * FROM `users` WHERE email = ?");
+    $select_user->execute([$email]);
+    $row = $select_user->fetch(PDO::FETCH_ASSOC);
+
+    if ($row && password_verify($pass, $row['password'])) {
+        $_SESSION['user_id'] = $row['id'];
+        $_SESSION['user_name'] = $row['username'];
+        $_SESSION['user_email'] = $row['email'];
+        $_SESSION['is_admin'] = $row['is_admin'];
+        $_SESSION['first_name'] = $row['first_name'];
+        $_SESSION['surname'] = $row['surname'];
+        $_SESSION['middle_name'] = $row['middle_name'];
+        $_SESSION['email'] = $row['email'];
+        $_SESSION['phone'] = $row['phone'];
+        $_SESSION['barangay'] = $row['barangay'];
+        $_SESSION['address'] = $row['address'];
+
+
+        if ($user_id && isset($_SESSION['is_admin']) && $_SESSION['is_admin'] != 1) {
+            $_SESSION['unauthorized'] = true;
+            header("Location: ../pages/login.php");
+            exit();
+        } else{
+            header('Location: admin.php');
+        }
+        
+    } else {
+        $acc_msg[] = 'Incorrect email or password';
+    }
+}
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tender Loving Cookies - Admin Log In</title>
+    <link rel="stylesheet" href="../assets/css/styles.css" />
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body class="auth-page">
+
+    <!-- Login Form -->
+    <div class="main-container-login">
+        <section class="form-container">
+            <form action="" method="post">
+                <h1>Admin Login</h1>
+                <div class="input-field">
+                    <label>Email <sup>*</sup></label>
+                    <input type="email" name="email" required maxlength="50" minlength="12"
+                        oninput="this.value = this.value.replace(/\s/g, '')">
+                </div>
+
+                <div class="input-field">
+                    <label>Password <sup>*</sup></label>
+                    <div class="password-container">
+                        <input type="password" id="password" name="pass" required maxlength="16" minlength="6"
+                            oninput="this.value = this.value.replace(/\s/g, '')">
+                        <i id="toggle-pass" class="bx bx-hide toggle-password"></i>
+                    </div>
+                </div>
+                <?php
+                if (isset($acc_msg)) {
+                    foreach ($acc_msg as $msg) {
+                        echo '<div class="error-message">' . htmlspecialchars($msg) . '</div>';
+                    }
+                }
+                ?>
+                <button type="submit" name="submit" class="btn">Login</button>
+                <p>
+                    Don't have an account?
+                    <a href="register.php" class="link">Register</a>
+                </p>
+            </form>
+        </section>
+    </div>
+
+    <script src="../assets/js/script.js"></script>
+    <script>
+        document.getElementById('toggle-pass').addEventListener('click', function () {
+            const passwordInput = document.getElementById('password');
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            this.classList.toggle('bx-hide');
+            this.classList.toggle('bx-show');
+        });
+    </script>
+    <?php include '../includes/alert.php'; ?>
+</body>
+
+</html>

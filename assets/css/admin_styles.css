@@ -1,0 +1,180 @@
+:root {
+    --green: #87a243;
+    --light-green: #a5c766;
+    --gradient-green: linear-gradient(to right, #5a6b54, #44da4b);
+    --light-gray: #E5E2DF;
+    --shadow: 0 0 10px rgb(0 0 0/15%);
+    --background: linear-gradient(to top, rgba(32, 220, 45, 0.3), rgba(13, 11, 11, 0.3));
+}
+
+/**************Dashboard**************/
+.dashboard,
+.users,
+.discounts,
+.feedbacks {
+    text-align: center;
+}
+
+.dashboard .box-container {
+    grid-template-columns: repeat(3, auto);
+    justify-content: center;
+}
+
+.dashboard .box-container .box {
+    text-align: center;
+    max-width: 300px !important;
+    max-height: 300px !important;
+    box-shadow: var(--shadow);
+    border-radius: .5rem;
+    padding: 1.5rem;
+    padding-bottom: 3rem;
+    margin: 20px 20px;
+}
+
+.dashboard .box-container .box h3 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.dashboard .box-container .box p {
+    font-size: 1.7rem;
+    margin: 1rem 0;
+    text-transform: capitalize;
+    color: #555;
+}
+
+/**************Users**************/
+.users, .discounts, .feedbacks {
+    margin-top: 20px;
+}
+.table-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+}
+
+/**************Profile**************/
+.view-page {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.profile-info {
+    width: 100%;
+}
+
+.form-container form .input-field {
+    margin: 0px 20px;
+}
+
+.view-page form {
+    display: grid;
+    grid-template-columns: repeat(1, 100%);
+    width: 100%;
+}
+
+.update-field {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 25px;
+    margin-top: 10px;
+    max-height: 50px;
+}
+
+.profile {
+    object-fit: cover;
+    border: 2px solid #000;
+    width: 100%;
+    height: 100%;
+    max-width: 400px !important;
+    max-height: 400px;
+    border-radius: 50%;
+}
+
+.profile-details {
+    margin: 30px auto;
+    text-align: center;
+}
+
+.fa-edit {
+    border-radius: .25rem;
+    font-size: 1.7rem;
+    height: 2.5rem;
+    cursor: pointer;
+}
+
+.form-container form label {
+    display: block;
+    font-weight: bold;
+    margin-top: 0% !important;
+}
+
+strong {
+    width: 60%;
+}
+
+.field-text {
+    width: 100%;
+}
+
+.field-input {
+    height: 36px;
+}
+
+/**************Orders**************/
+.products .box {
+    width: 95%;
+    display: grid !important;
+    grid-template-columns: repeat(2, auto);
+    align-items: center !important;
+    margin: 20px auto !important;
+    justify-items: center;
+    min-height: 500px;
+}
+
+.products .img {
+    max-width: 400px !important;
+    min-width: 400px;
+    max-height: 250px;
+}
+
+.product-billing {
+    justify-items: center;
+    align-self: center;
+}
+
+.products .row {
+    margin: 0px;
+}
+
+.billing-address {
+    display: flex;
+    flex-direction: column;
+}
+
+.billing-address a {
+    background: var(--green);
+    background-size: cover;
+    font-size: 25px;
+    padding: 10px 20px;
+    border-radius: 25px;
+    text-transform: capitalize;
+}
+
+.billing-address p {
+    margin-top: 30px !important;
+    width: 100%;
+}
+
+.products .btn {
+    position: relative !important;
+}
+
+.box-container .box:hover {
+    transform: scale(1);
+}
