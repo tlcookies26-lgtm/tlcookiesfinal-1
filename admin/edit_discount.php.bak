@@ -89,7 +89,7 @@ if (isset($_POST['update_discount'])) {
                     <strong>Current Image:</strong>
                     <input type="file" name="image" accept="image/*" id="discount_img_input" style="display: none;">
                     <label for="discount_img_input">
-                        <img src="<?= htmlspecialchars($discount['image'] ?? ''); ?>" alt="Upload"
+                        <img src="<?= htmlspecialchars($discount['image']); ?>" alt="Upload"
                             style="width: 300px; cursor: pointer;">
                     </label>
 
@@ -98,25 +98,25 @@ if (isset($_POST['update_discount'])) {
                         <strong>Discount Percentage:</strong>
                         <strong>Category:</strong>
 
-                        <input type="text" name="title" required value="<?= htmlspecialchars($discount['title'] ?? ''); ?>">
+                        <input type="text" name="title" required value="<?= htmlspecialchars($discount['title']); ?>">
                         <input type="number" name="discount_percentage" required step="0.01" min="0"
-                            value="<?= htmlspecialchars($discount['discount_percentage'] ?? ''); ?>">
+                            value="<?= htmlspecialchars($discount['discount_percentage']); ?>">
                         <input type="text" name="target_value" required
-                            value="<?= htmlspecialchars($discount['target_value'] ?? ''); ?>">
+                            value="<?= htmlspecialchars($discount['target_value']); ?>">
                     </div>
                 </div>
 
                 <div class="box2">
                     <strong>Description:</strong>
                     <textarea name="description" required
-                        class="input"><?= htmlspecialchars($discount['description'] ?? ''); ?></textarea>
+                        class="input"><?= htmlspecialchars($discount['description']); ?></textarea>
 
                     <strong>Start Date:</strong>
                     <input type="date" name="start_date" required
-                        value="<?= htmlspecialchars($discount['start_date'] ?? ''); ?>">
+                        value="<?= htmlspecialchars($discount['start_date']); ?>">
 
                     <strong>End Date:</strong>
-                    <input type="date" name="end_date" required value="<?= htmlspecialchars($discount['end_date'] ?? ''); ?>">
+                    <input type="date" name="end_date" required value="<?= htmlspecialchars($discount['end_date']); ?>">
 
                     <input type="submit" name="update_discount" value="Update Discount" class="btn">
                 </div>

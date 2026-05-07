@@ -60,11 +60,19 @@ try {
         title VARCHAR(255) NOT NULL,
         description TEXT NOT NULL,
         discount_percentage INT NOT NULL CHECK (discount_percentage BETWEEN 1 AND 100),
+        target_value VARCHAR(255) DEFAULT NULL,
         start_date DATE NOT NULL,
         end_date DATE NOT NULL,
         image VARCHAR(255) NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )");
+
+    // Add target_value to existing deployed databases that predate this column
+    try {
+        $conn->exec("ALTER TABLE discounts ADD COLUMN target_value VARCHAR(255) DEFAULT NULL");
+    } catch (PDOException \$e) {
+        // Column already exists — safe to ignore
+    }
 
     $conn->exec("CREATE TABLE IF NOT EXISTS cart (
         id INT AUTO_INCREMENT PRIMARY KEY,
