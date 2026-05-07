@@ -46,8 +46,12 @@ if (isset($_POST['update_discount'])) {
     $image_tmp = $_FILES['image']['tmp_name'];
 
     if (!empty($image)) {
-        $image_path = "uploads/discount_pictures/" . $image;
-        move_uploaded_file($image_tmp, $image_path);
+        $upload_dir = __DIR__ . "/uploads/discount_pictures/";
+        if (!is_dir($upload_dir)) {
+            mkdir($upload_dir, 0755, true);
+        }
+        $image_path = "uploads/discount_pictures/" . basename($image);
+        move_uploaded_file($image_tmp, $upload_dir . basename($image));
 
         $update = $conn->prepare("UPDATE discounts SET title=?, description=?, discount_percentage=?, start_date=?, end_date=?, image=? WHERE id=?");
         $update->execute([$title, $description, $percentage, $start_date, $end_date, $image_path, $discount_id]);
