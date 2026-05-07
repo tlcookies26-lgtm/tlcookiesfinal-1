@@ -8,7 +8,7 @@ ln -sf /etc/apache2/mods-available/mpm_prefork.load /etc/apache2/mods-enabled/mp
 ln -sf /etc/apache2/mods-available/mpm_prefork.conf /etc/apache2/mods-enabled/mpm_prefork.conf
 
 # ── 2. Bind to Railway's dynamic PORT ───────────────────────────────────────
-PORT="${PORT:-80}"
+PORT="${PORT:-3306}"
 echo "Configuring Apache to listen on port ${PORT}..."
 
 # Rewrite ports.conf completely — don't rely on sed finding the right string
