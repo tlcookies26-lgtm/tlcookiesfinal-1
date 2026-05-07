@@ -1,5 +1,11 @@
 Options -Indexes
 RewriteEngine On
 
-# Internally rewrite root to pages/index.php (no redirect, URL stays clean)
+# Rewrite root to pages/index.php
 RewriteRule ^$ pages/index.php [L]
+
+# Map any top-level .php file to pages/ subfolder (if not already in pages/)
+RewriteCond %{REQUEST_URI} !^/pages/
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([^/]+\.php)$ pages/$1 [L]
