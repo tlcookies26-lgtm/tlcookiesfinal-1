@@ -3,53 +3,43 @@ include '../includes/connection.php';
 session_start();
 
 if (isset($_SESSION['user_id'])) {
-    $user_id = $_SESSION['user_id'];
     header('Location: index.php');
-} else {
-    $user_id = '';
-}
-
-if (isset($_SESSION['unauthorized'])) {
-    echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>";
-    echo "<script>
-        document.addEventListener('DOMContentLoaded', function() {
-            Swal.fire({
-                icon: 'error',
-                title: 'Access Denied',
-                text: 'You are not authorized to access the admin panel.',
-                confirmButtonText: 'OK'
-            });
-        });
-    </script>";
-    unset($_SESSION['unauthorized']);
+    exit;
 }
 
 if (isset($_POST['submit'])) {
-    $email = $_POST['email'];
-    $email = filter_var($email, FILTER_SANITIZE_SPECIAL_CHARS);
-    $pass = $_POST['pass'];
-    $pass = filter_var($pass, FILTER_SANITIZE_SPECIAL_CHARS);
+    $email = filter_var(trim($_POST['email']), FILTER_SANITIZE_SPECIAL_CHARS);
+    $pass  = trim($_POST['pass']);
+
+    if (empty($email) || empty($pass)) {
+        $_SESSION['login_error'] = 'Please fill in all fields.';
+        header('Location: login.php');
+        exit;
+    }
 
     $select_user = $conn->prepare("SELECT * FROM `users` WHERE email = ?");
     $select_user->execute([$email]);
     $row = $select_user->fetch(PDO::FETCH_ASSOC);
 
     if ($row && password_verify($pass, $row['password'])) {
-        $_SESSION['user_id'] = $row['id'];
-        $_SESSION['user_name'] = $row['username'];
-        $_SESSION['user_email'] = $row['email'];
-        $_SESSION['is_admin'] = $row['is_admin'];
-        $_SESSION['first_name'] = $row['first_name'];
-        $_SESSION['surname'] = $row['surname'];
+        $_SESSION['user_id']     = $row['id'];
+        $_SESSION['user_name']   = $row['username'];
+        $_SESSION['user_email']  = $row['email'];
+        $_SESSION['is_admin']    = $row['is_admin'];
+        $_SESSION['first_name']  = $row['first_name'];
+        $_SESSION['surname']     = $row['surname'];
         $_SESSION['middle_name'] = $row['middle_name'];
-        $_SESSION['email'] = $row['email'];
-        $_SESSION['phone'] = $row['phone'];
-        $_SESSION['barangay'] = $row['barangay'];
-        $_SESSION['address'] = $row['address'];
+        $_SESSION['email']       = $row['email'];
+        $_SESSION['phone']       = $row['phone'];
+        $_SESSION['barangay']    = $row['barangay'];
+        $_SESSION['address']     = $row['address'];
+
+        $redirect = isset($_GET['redirect']) ? $_GET['redirect'] : 'index.php';
+        header('Location: ' . $redirect);
     } else {
-        $acc_msg[] = 'Incorrect email or password';
+        $_SESSION['login_error'] = 'Incorrect email or password.';
+        header('Location: login.php');
     }
-    header('Location: index.php');
     exit;
 }
 ?>
@@ -73,6 +63,17 @@ if (isset($_POST['submit'])) {
         <section class="form-container">
             <form action="" method="post">
                 <h1>Login</h1>
+
+                <?php if (isset($_SESSION['login_error'])): ?>
+                    <div class="error-message"><?= htmlspecialchars($_SESSION['login_error']); ?></div>
+                    <?php unset($_SESSION['login_error']); ?>
+                <?php endif; ?>
+
+                <?php if (isset($_SESSION['unauthorized'])): ?>
+                    <div class="error-message">You are not authorized to access that page.</div>
+                    <?php unset($_SESSION['unauthorized']); ?>
+                <?php endif; ?>
+
                 <div class="input-field">
                     <label>Email <sup>*</sup></label>
                     <input type="email" name="email" required maxlength="50" minlength="12"
@@ -87,13 +88,7 @@ if (isset($_POST['submit'])) {
                         <i id="toggle-pass" class="bx bx-hide toggle-password"></i>
                     </div>
                 </div>
-                <?php
-                if (isset($acc_msg)) {
-                    foreach ($acc_msg as $msg) {
-                        echo '<div class="error-message">' . htmlspecialchars($msg) . '</div>';
-                    }
-                }
-                ?>
+
                 <button type="submit" name="submit" class="btn">Login</button>
                 <p>
                     Don't have an account?
