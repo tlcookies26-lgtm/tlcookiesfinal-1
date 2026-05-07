@@ -1,0 +1,5 @@
+Options -Indexes
+RewriteEngine On
+
+# Redirect root to pages/index.php
+RewriteRule ^$ pages/index.php [L,R=302]
