@@ -393,11 +393,7 @@ if (isset($_POST['add_to_cart'])) {
                         $discounted_price = $original_price;
 
                         if ($discount) {
-                            if ($discount['discount_type'] === 'percentage') {
-                                $discounted_price = $original_price - ($original_price * ($discount['discount_percentage'] / 100));
-                            } elseif ($discount['discount_type'] === 'fixed_amount') {
-                                $discounted_price = max(0, $original_price - $discount['discount_percentage']);
-                            }
+                            $discounted_price = $original_price - ($original_price * ($discount['discount_percentage'] / 100));
                             $discounted_price = number_format($discounted_price, 2);
                         }
 
