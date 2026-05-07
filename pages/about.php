@@ -384,7 +384,7 @@ if (isset($_POST['logout'])) {
             <div class="overlay"></div>
             <div class="title">
                 <a class="logo-text" style="font-family: 'Segoe UI', Arial, sans-serif; font-size: 2.5rem; font-weight: 800; color: #3E2723; text-decoration: none;">
-                    Bette<span style="color: #3E2723;">Bites</span> 🍪</a>
+                    Tender Loving <span style="color: #3E2723;">Cookies</span> 🍪</a>
                 <h1>What Our Cookie Lovers Say</h1>
             </div>
             <div class="container">
@@ -443,7 +443,7 @@ if (isset($_POST['logout'])) {
                 <div class="title">
                     <div class="img-box">
                         <a class="logo-text" style="font-family: 'Segoe UI', Arial, sans-serif; font-size: 2.5rem; font-weight: 800; color: #3E2723; text-decoration: none;">
-                            Bette<span style="color: #3E2723;">Bites</span> 🍪</a>
+                            Tender Loving <span style="color: #3E2723;">Cookies</span> 🍪</a>
                     </div>
                     <h1>Visit Us</h1>
                 </div>
@@ -483,7 +483,7 @@ if (isset($_POST['logout'])) {
                                     <div class="message-container">
                                         <div class="title">
                                             <a class="logo-text" style="font-family: 'Segoe UI', Arial, sans-serif; font-size: 2.5rem; font-weight: 800; color: #3E2723; text-decoration: none;">
-                                                Bette<span style="color: #3E2723;">Bites</span> 🍪</a>
+                                                Tender Loving <span style="color: #3E2723;">Cookies</span> 🍪</a>
                                             <h1>Share Your Cookie Experience</h1>
                                             <p>Tell us what you think about our cookies! 🍪</p>
                                         </div>
