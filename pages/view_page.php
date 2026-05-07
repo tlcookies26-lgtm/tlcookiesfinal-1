@@ -56,8 +56,8 @@ if (isset($_POST['add_to_cart'])) {
                 $warning_msg = 'Your cookie jar is full (max 20 items)';
             } else {
                 // Insert into cart
-                $insert_cart = $conn->prepare("INSERT INTO `cart`(id, user_id, product_id, price, qty) VALUES(?,?,?,?,?)");
-                $insert_cart->execute([$id, $user_id, $product_id, $fetch_product['price'], $qty]);
+                $insert_cart = $conn->prepare("INSERT INTO `cart`(user_id, product_id, price, qty) VALUES(?,?,?,?)");
+                $insert_cart->execute([$user_id, $product_id, $fetch_product['price'], $qty]);
                 $success_msg = 'Cookie added to your jar successfully! 🍪';
             }
         }
