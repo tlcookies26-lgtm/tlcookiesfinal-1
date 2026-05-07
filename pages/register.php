@@ -53,44 +53,34 @@ if (isset($_POST['submit'])) {
     // Hash the password
     $hashed_pass = password_hash($pass, PASSWORD_DEFAULT);
 
+    // Default profile picture (no upload in registration form)
+    $profile_picture = '';
+
     // Insert the user into the database
     $insert_user = $conn->prepare("INSERT INTO `users`(id, username, email, password, surname, first_name, middle_name, phone, barangay, address, profile_picture) 
         VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     $insert_user->execute([$id, $username, $email, $hashed_pass, $surname, $first_name, $middle_name, $phone, $barangay, $address, $profile_picture]);
 
-    // Store user data in session after successful insertion
-    $_SESSION['user_id'] = $id;
-    $_SESSION['username'] = $username;
-    $_SESSION['first_name'] = $first_name;
-    $_SESSION['surname'] = $surname;
-    $_SESSION['middle_name'] = $middle_name;
-    $_SESSION['email'] = $email;
-    $_SESSION['phone'] = $phone;
-    $_SESSION['barangay'] = $barangay;
-    $_SESSION['address'] = $address;
-
-    $email = $_POST['email'];
-    $email = filter_var($email, FILTER_SANITIZE_SPECIAL_CHARS);
-    $pass = $_POST['pass'];
-    $pass = filter_var($pass, FILTER_SANITIZE_SPECIAL_CHARS);
-
-    $select_users = $conn->prepare("SELECT * FROM `users` WHERE email = ?");
-    $select_users->execute([$email]);
+    // Fetch the newly inserted user to populate session with all fields (including is_admin)
+    $select_users = $conn->prepare("SELECT * FROM `users` WHERE id = ? LIMIT 1");
+    $select_users->execute([$id]);
     $row = $select_users->fetch(PDO::FETCH_ASSOC);
 
-    if ($row && password_verify($pass, $row['password'])) {
-        $_SESSION['user_id'] = $row['id'];
-        $_SESSION['user_name'] = $row['username'];
+    if ($row) {
+        $_SESSION['user_id']    = $row['id'];
+        $_SESSION['username']   = $row['username'];
+        $_SESSION['user_name']  = $row['username'];
         $_SESSION['user_email'] = $row['email'];
-        $_SESSION['is_admin'] = $row['is_admin'];
+        $_SESSION['is_admin']   = $row['is_admin'];
         $_SESSION['first_name'] = $row['first_name'];
-        $_SESSION['surname'] = $row['surname'];
-        $_SESSION['middle_name'] = $row['middle_name'];
-        $_SESSION['email'] = $row['email'];
-        $_SESSION['phone'] = $row['phone'];
-        $_SESSION['barangay'] = $row['barangay'];
-        $_SESSION['address'] = $row['address'];
+        $_SESSION['surname']    = $row['surname'];
+        $_SESSION['middle_name']= $row['middle_name'];
+        $_SESSION['email']      = $row['email'];
+        $_SESSION['phone']      = $row['phone'];
+        $_SESSION['barangay']   = $row['barangay'];
+        $_SESSION['address']    = $row['address'];
     }
+
     header('Location: index.php');
     exit;
 
