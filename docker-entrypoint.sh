@@ -20,6 +20,8 @@ PORTS
 cat > /etc/apache2/sites-enabled/000-default.conf << VHOST
 <VirtualHost *:${PORT}>
     DocumentRoot /var/www/html
+    ServerName ${RAILWAY_PUBLIC_DOMAIN:-localhost}
+    UseCanonicalName On
     <Directory /var/www/html>
         Options Indexes FollowSymLinks
         AllowOverride All

@@ -1,5 +1,5 @@
 Options -Indexes
 RewriteEngine On
 
-# Redirect root to pages/index.php
-RewriteRule ^$ pages/index.php [L,R=302]
+# Internally rewrite root to pages/index.php (no redirect, URL stays clean)
+RewriteRule ^$ pages/index.php [L]
