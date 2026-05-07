@@ -11,12 +11,10 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install pdo pdo_mysql gd \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Enable mod_rewrite first, then fix MPM conflict so nothing re-enables mpm_event afterward
-RUN a2enmod rewrite \
-    && rm -f /etc/apache2/mods-enabled/mpm_*.load \
-             /etc/apache2/mods-enabled/mpm_*.conf \
-    && ln -sf /etc/apache2/mods-available/mpm_prefork.load /etc/apache2/mods-enabled/mpm_prefork.load \
-    && ln -sf /etc/apache2/mods-available/mpm_prefork.conf /etc/apache2/mods-enabled/mpm_prefork.conf
+# Fix MPM conflict - disable all MPMs first, then enable only prefork
+RUN a2dismod mpm_event mpm_worker mpm_prefork 2>/dev/null || true \
+    && a2enmod mpm_prefork \
+    && a2enmod rewrite
 
 # Set working directory
 WORKDIR /var/www/html
