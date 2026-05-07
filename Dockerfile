@@ -11,11 +11,13 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install pdo pdo_mysql gd \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Fix MPM conflict: disable event/worker, enable prefork (only one MPM allowed)
-RUN a2dismod mpm_event mpm_worker 2>/dev/null || true \
-    && a2enmod mpm_prefork
+# Fix MPM conflict: physically remove ALL mpm symlinks, then enable only prefork
+RUN rm -f /etc/apache2/mods-enabled/mpm_*.load \
+          /etc/apache2/mods-enabled/mpm_*.conf \
+    && ln -sf /etc/apache2/mods-available/mpm_prefork.load /etc/apache2/mods-enabled/mpm_prefork.load \
+    && ln -sf /etc/apache2/mods-available/mpm_prefork.conf /etc/apache2/mods-enabled/mpm_prefork.conf
 
-# Enable Apache mod_rewrite
+# Enable mod_rewrite
 RUN a2enmod rewrite
 
 # Set working directory
@@ -40,7 +42,7 @@ RUN echo '<Directory /var/www/html>\n\
 </Directory>' > /etc/apache2/conf-available/override.conf \
     && a2enconf override
 
-# Expose port (Railway injects $PORT, Apache listens on it)
+# Copy and enable entrypoint
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
