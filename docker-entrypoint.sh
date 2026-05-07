@@ -1,22 +1,34 @@
 #!/bin/bash
 set -e
 
-# Fix MPM conflict at runtime — build-time fixes can be silently undone by layer caching.
-# Wipe ALL mpm symlinks and re-create only mpm_prefork. This is guaranteed to run
-# every time the container starts, regardless of what happened at build time.
+# ── 1. Fix MPM conflict at runtime ──────────────────────────────────────────
 rm -f /etc/apache2/mods-enabled/mpm_*.load \
       /etc/apache2/mods-enabled/mpm_*.conf
 ln -sf /etc/apache2/mods-available/mpm_prefork.load /etc/apache2/mods-enabled/mpm_prefork.load
 ln -sf /etc/apache2/mods-available/mpm_prefork.conf /etc/apache2/mods-enabled/mpm_prefork.conf
 
-echo "Active MPM modules:"
-ls /etc/apache2/mods-enabled/mpm_*
-
-# Railway injects a dynamic $PORT — configure Apache to use it
+# ── 2. Bind to Railway's dynamic PORT ───────────────────────────────────────
 PORT="${PORT:-80}"
+echo "Configuring Apache to listen on port ${PORT}..."
 
-sed -i "s/Listen 80/Listen ${PORT}/" /etc/apache2/ports.conf
-sed -i "s/:80>/:${PORT}>/" /etc/apache2/sites-enabled/000-default.conf
+# Rewrite ports.conf completely — don't rely on sed finding the right string
+cat > /etc/apache2/ports.conf << PORTS
+Listen ${PORT}
+PORTS
+
+# Rewrite the default vhost completely — don't rely on sed
+cat > /etc/apache2/sites-enabled/000-default.conf << VHOST
+<VirtualHost *:${PORT}>
+    DocumentRoot /var/www/html
+    <Directory /var/www/html>
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
+    </Directory>
+    ErrorLog \${APACHE_LOG_DIR}/error.log
+    CustomLog \${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+VHOST
 
 echo "Starting Apache on port ${PORT}..."
 exec apache2-foreground
