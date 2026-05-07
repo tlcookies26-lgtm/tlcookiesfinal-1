@@ -70,7 +70,7 @@ try {
     // Add target_value to existing deployed databases that predate this column
     try {
         $conn->exec("ALTER TABLE discounts ADD COLUMN target_value VARCHAR(255) DEFAULT NULL");
-    } catch (PDOException \$e) {
+    } catch (PDOException $e) {
         // Column already exists — safe to ignore
     }
 
