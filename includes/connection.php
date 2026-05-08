@@ -59,7 +59,7 @@ try {
     // Add stock to existing deployed databases that predate this column
     try {
         $conn->exec("ALTER TABLE products ADD COLUMN stock INT NOT NULL DEFAULT 0");
-    } catch (PDOException \$e) {
+    } catch (PDOException $e) {
         // Column already exists — safe to ignore
     }
 
