@@ -70,7 +70,6 @@ if (isset($_GET['delete_testimonials'])) {
             <h2>Feedback</h2>
             <div class="table-container">
                 <table border="1">
-                    <thread>
                     <tr>
                         <th>ID</th>
                         <th>User ID</th>
@@ -78,7 +77,6 @@ if (isset($_GET['delete_testimonials'])) {
                         <th>Date</th>
                         <th>Action</th>
                     </tr>
-                    </thread>
                     <?php foreach ($messages as $message): ?>
                         <tr>
                             <td><?= $message['id'] ?></td>
