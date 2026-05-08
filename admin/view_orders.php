@@ -55,11 +55,13 @@ if (isset($_GET['delete_order'])) {
     $check_order->execute([$delete_id]);
     
     if ($check_order->rowCount() > 0) {
-        // Restore stock for non-cancelled items before deleting
+        // Restore stock only for pending/processing items before deleting.
+        // 'cancelled' items already had stock restored when cancelled.
+        // 'delivered' items were fulfilled; stock was deducted at checkout and should NOT be restored.
         $fetch_items = $conn->prepare("SELECT product_id, qty, status FROM order_items WHERE order_id = ?");
         $fetch_items->execute([$delete_id]);
         while ($item = $fetch_items->fetch(PDO::FETCH_ASSOC)) {
-            if ($item['status'] !== 'cancelled') {
+            if ($item['status'] === 'pending' || $item['status'] === 'processing') {
                 $conn->prepare("UPDATE products SET stock = stock + ? WHERE id = ?")->execute([$item['qty'], $item['product_id']]);
             }
         }
@@ -435,16 +437,33 @@ if (isset($_GET['delete_order'])) {
                     $new_status = $_POST['order_status'];
 
                     if ($new_status) {
-                        // If cancelling, restore stock — but only for items not already cancelled
-                        if ($new_status === 'cancelled') {
-                            $fetch_items = $conn->prepare("SELECT product_id, qty, status FROM order_items WHERE order_id = ?");
+                        // Get current status before updating
+                        $get_current = $conn->prepare("SELECT DISTINCT status FROM order_items WHERE order_id = ? LIMIT 1");
+                        $get_current->execute([$order_id]);
+                        $current_row = $get_current->fetch(PDO::FETCH_ASSOC);
+                        $current_status = $current_row ? $current_row['status'] : null;
+
+                        // Stock rules (stock is deducted at checkout):
+                        // - Cancelling a non-cancelled, non-delivered order → restore stock
+                        // - Re-opening a cancelled order (back to pending/processing) → deduct stock again
+                        // - Marking delivered → no change (stock already deducted at checkout)
+                        if ($new_status === 'cancelled' && $current_status !== 'cancelled' && $current_status !== 'delivered') {
+                            // Restore stock because order was never fulfilled
+                            $fetch_items = $conn->prepare("SELECT product_id, qty FROM order_items WHERE order_id = ?");
                             $fetch_items->execute([$order_id]);
                             while ($item = $fetch_items->fetch(PDO::FETCH_ASSOC)) {
-                                if ($item['status'] !== 'cancelled') {
-                                    $conn->prepare("UPDATE products SET stock = stock + ? WHERE id = ?")->execute([$item['qty'], $item['product_id']]);
-                                }
+                                $conn->prepare("UPDATE products SET stock = stock + ? WHERE id = ?")->execute([$item['qty'], $item['product_id']]);
+                            }
+                        } elseif ($current_status === 'cancelled' && in_array($new_status, ['pending', 'processing'])) {
+                            // Re-opening a cancelled order → deduct stock again
+                            $fetch_items = $conn->prepare("SELECT product_id, qty FROM order_items WHERE order_id = ?");
+                            $fetch_items->execute([$order_id]);
+                            while ($item = $fetch_items->fetch(PDO::FETCH_ASSOC)) {
+                                $conn->prepare("UPDATE products SET stock = GREATEST(0, stock - ?) WHERE id = ?")->execute([$item['qty'], $item['product_id']]);
                             }
                         }
+                        // Note: transitioning TO 'delivered' needs no stock change;
+                        // stock was already deducted when the order was placed at checkout.
 
                         // Update order status in `order_items` table
                         $update_status_stmt = $conn->prepare("UPDATE order_items SET status = ? WHERE order_id = ?");
@@ -531,7 +550,17 @@ if (isset($_GET['delete_order'])) {
                                 }
                                 ?>
                                 
-                                <div style="clear: both; margin-top: 1rem; text-align: right;">
+                                <?php
+                                // Calculate total cookies ordered for this order
+                                $total_qty_stmt = $conn->prepare("SELECT SUM(qty) as total_qty FROM order_items WHERE order_id = ?");
+                                $total_qty_stmt->execute([$fetch_order['order_id']]);
+                                $total_qty_row = $total_qty_stmt->fetch(PDO::FETCH_ASSOC);
+                                $total_cookies = $total_qty_row['total_qty'] ?? 0;
+                                ?>
+                                <div style="clear: both; margin-top: 1rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+                                    <div style="background: var(--cookie-cream); border: 2px solid var(--cookie-tan); border-radius: 30px; padding: 0.5rem 1.2rem; font-size: 1.4rem; color: var(--cookie-chocolate); display: flex; align-items: center; gap: 0.4rem;">
+                                        🍪 <strong><?= $total_cookies ?></strong>&nbsp;cookie<?= $total_cookies != 1 ? 's' : '' ?> ordered
+                                    </div>
                                     <strong style="font-size: 1.8rem; color: var(--cookie-chocolate);">
                                         Total: ₱<?= number_format($fetch_order['total_amount'], 2); ?>
                                     </strong>
