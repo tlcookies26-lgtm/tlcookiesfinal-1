@@ -46,8 +46,8 @@
             <section class="products">
                 <div class="box-container">
                     <div class="title">
-                        <img src="../assets/images/download.png" class="logo2">
-                        <h1>my orders</h1>
+                        
+                        <h1>My Orders</h1>
                     </div>
                 </div>
                 <div class="box-container">
