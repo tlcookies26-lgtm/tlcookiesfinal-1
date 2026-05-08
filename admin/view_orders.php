@@ -425,7 +425,7 @@ if (isset($_GET['delete_order'])) {
         <section class="products">
             <div class="box-container">
                 <div class="title">
-                    <img src="../assets/images/cookie-logo.png" class="logo2" alt="Cookie Jar Logo">
+                    
                     <h1>Cookie Orders</h1>
                 </div>
             </div>
