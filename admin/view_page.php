@@ -113,11 +113,7 @@ if (isset($_POST['add_to_cart'])) {
                         $discounted_price = $original_price;
 
                         if ($discount) {
-                            if ($discount['discount_type'] === 'percentage') {
-                                $discounted_price = $original_price - ($original_price * ($discount['discount_percentage'] / 100));
-                            } elseif ($discount['discount_type'] === 'fixed_amount') {
-                                $discounted_price = max(0, $original_price - $discount['discount_percentage']);
-                            }
+                            $discounted_price = $original_price - ($original_price * ($discount['discount_percentage'] / 100));
                             $discounted_price = number_format($discounted_price, 2);
                         }
 
@@ -126,7 +122,7 @@ if (isset($_POST['add_to_cart'])) {
                             <img src="../admin/<?php echo $fetch_products['images']; ?>">
                             <div class="detail">
                                 <div class="name">
-                                    <?= $fetch_products['name']; ?>             <?= $fetch_products['category']; ?>
+                                    <?= $fetch_products['name']; ?>
                                 </div>
                                 <div class="product-detail">
                                     <h1>Origin:</h1>
