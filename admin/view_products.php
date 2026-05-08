@@ -295,6 +295,23 @@ $active_discount = $get_discount->fetch(PDO::FETCH_ASSOC);
                             <?php if ($active_discount): ?>
                                 <div style="position: absolute; top: 10px; left: 10px; background: #ff6b6b; color: white; padding: 0.3rem 1rem; border-radius: 20px; font-size: 1.2rem; z-index: 3;">-<?= $active_discount['discount_percentage'] ?>%</div>
                             <?php endif; ?>
+
+                            <?php
+                            $stock = $fetch_products['stock'];
+                            if ($stock == 0) {
+                                $badgeStyle = 'background:#f8d7da;color:#721c24;';
+                                $badgeText  = '❌ Out of Stock';
+                            } elseif ($stock <= 10) {
+                                $badgeStyle = 'background:#fff3cd;color:#856404;';
+                                $badgeText  = '⚠️ Low: ' . $stock . ' left';
+                            } else {
+                                $badgeStyle = 'background:#d4edda;color:#155724;';
+                                $badgeText  = '✅ ' . $stock . ' in stock';
+                            }
+                            ?>
+                            <div style="position: absolute; top: 10px; right: 10px; <?= $badgeStyle ?> padding: 0.3rem 0.9rem; border-radius: 20px; font-size: 1.1rem; z-index: 3; font-weight: bold;">
+                                <?= $badgeText ?>
+                            </div>
                             
                             <img class="img" src="../admin/<?= $fetch_products['images']; ?>" alt="<?= $fetch_products['name']; ?> Cookie">
                             

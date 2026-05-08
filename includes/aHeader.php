@@ -8,6 +8,7 @@
             <a href="view_message.php" class="<?= ($page == 'view_message') ? 'active' : '' ?>">view feedbacks</a>
             <a href="view_products.php" class="<?= ($page == 'view_products') ? 'active' : '' ?>">view shop</a>
             <a href="view_discount.php" class="<?= ($page == 'view_discount') ? 'active' : '' ?>">view discounts</a>
+            <a href="stock.php" class="<?= ($page == 'stock') ? 'active' : '' ?>">manage stock</a>
         </nav>
         <div class="icons">
             <?php

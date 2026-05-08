@@ -419,6 +419,18 @@ if (isset($_POST['add_to_cart'])) {
                                         <p>₱<?= number_format($original_price, 2); ?></p>
                                     <?php endif; ?>
                                 </div>
+
+                                <?php
+                                $stock = $fetch_products['stock'];
+                                if ($stock == 0): ?>
+                                    <div style="background:#f8d7da;color:#721c24;border:1px solid #f5c6cb;border-radius:10px;padding:1rem 1.5rem;margin:1rem 0;font-size:1.4rem;font-weight:bold;">
+                                        ❌ Out of Stock — Check back soon!
+                                    </div>
+                                <?php elseif ($stock <= 10): ?>
+                                    <div style="background:#fff3cd;color:#856404;border:1px solid #ffeeba;border-radius:10px;padding:1rem 1.5rem;margin:1rem 0;font-size:1.4rem;font-weight:bold;">
+                                        ⚠️ Almost gone — only <?= $stock ?> left!
+                                    </div>
+                                <?php endif; ?>
                                 <div class="button">
                                     <input type="number" name="qty" required min="1" class="quantity" value="1" max="99">
                                     <button type="submit" name="add_to_cart" class="btn"><i class="bx bx-cart-add"></i> Add to Jar</button>

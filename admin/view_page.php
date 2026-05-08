@@ -139,6 +139,22 @@ if (isset($_POST['add_to_cart'])) {
                                         <p>₱<?= number_format($original_price, 2); ?></p>
                                     <?php endif; ?>
                                 </div>
+
+                                <?php
+                                $stock = $fetch_products['stock'];
+                                if ($stock == 0): ?>
+                                    <div style="background:#f8d7da;color:#721c24;border:1px solid #f5c6cb;border-radius:10px;padding:1rem 1.5rem;margin:1rem 0;font-size:1.4rem;font-weight:bold;">
+                                        ❌ Out of Stock — <a href="stock.php" style="color:#721c24;">Update stock →</a>
+                                    </div>
+                                <?php elseif ($stock <= 10): ?>
+                                    <div style="background:#fff3cd;color:#856404;border:1px solid #ffeeba;border-radius:10px;padding:1rem 1.5rem;margin:1rem 0;font-size:1.4rem;font-weight:bold;">
+                                        ⚠️ Low Stock: <?= $stock ?> remaining — <a href="stock.php" style="color:#856404;">Update stock →</a>
+                                    </div>
+                                <?php else: ?>
+                                    <div style="background:#d4edda;color:#155724;border:1px solid #c3e6cb;border-radius:10px;padding:1rem 1.5rem;margin:1rem 0;font-size:1.4rem;font-weight:bold;">
+                                        ✅ In Stock: <?= $stock ?> available
+                                    </div>
+                                <?php endif; ?>
                                 <div class="button">
                                     <a class="btn" href="view_products.php?delete_product=<?= $fetch_products['id'] ?>"
                                         onclick="return confirm('Are you sure?')">DELETE</a>

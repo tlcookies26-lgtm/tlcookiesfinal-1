@@ -561,6 +561,18 @@ if (isset($_POST['buy_now_modal'])) {
                             <?php if ($active_discount): ?>
                                 <div class="discount-badge">-<?= $active_discount['discount_percentage'] ?>%</div>
                             <?php endif; ?>
+
+                            <?php
+                            $stock = $fetch_products['stock'];
+                            if ($stock == 0): ?>
+                                <div style="position:absolute;bottom:0;left:0;right:0;background:rgba(220,53,69,0.92);color:#fff;text-align:center;padding:0.5rem;font-size:1.2rem;font-weight:bold;z-index:4;border-radius:0 0 10px 10px;">
+                                    ❌ Out of Stock
+                                </div>
+                            <?php elseif ($stock <= 10): ?>
+                                <div style="position:absolute;bottom:0;left:0;right:0;background:rgba(255,193,7,0.92);color:#333;text-align:center;padding:0.5rem;font-size:1.2rem;font-weight:bold;z-index:4;border-radius:0 0 10px 10px;">
+                                    ⚠️ Only <?= $stock ?> left!
+                                </div>
+                            <?php endif; ?>
                             
                             <img class="img" src="../admin/<?= $fetch_products['images']; ?>" alt="<?= htmlspecialchars($fetch_products['name']); ?> Cookie">
                             

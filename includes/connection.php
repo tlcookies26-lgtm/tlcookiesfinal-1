@@ -52,8 +52,16 @@ try {
         benefits TEXT NOT NULL,
         price DECIMAL(10,2) NOT NULL CHECK (price >= 0),
         images TEXT NOT NULL,
+        stock INT NOT NULL DEFAULT 0,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )");
+
+    // Add stock to existing deployed databases that predate this column
+    try {
+        $conn->exec("ALTER TABLE products ADD COLUMN stock INT NOT NULL DEFAULT 0");
+    } catch (PDOException \$e) {
+        // Column already exists — safe to ignore
+    }
 
     $conn->exec("CREATE TABLE IF NOT EXISTS discounts (
         id INT AUTO_INCREMENT PRIMARY KEY,
