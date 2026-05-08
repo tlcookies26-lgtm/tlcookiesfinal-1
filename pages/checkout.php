@@ -120,6 +120,10 @@ if (isset($_POST['place_order'])) {
         foreach ($order_items as $item) {
             $insert_order_item = $conn->prepare("INSERT INTO `order_items` (order_id, product_id, qty, sub_total) VALUES (?, ?, ?, ?)");
             $insert_order_item->execute([$order_id, $item['product_id'], $item['qty'], $item['sub_total']]);
+
+            // Deduct stock — floor at 0 so it never goes negative
+            $deduct_stock = $conn->prepare("UPDATE `products` SET stock = GREATEST(0, stock - ?) WHERE id = ?");
+            $deduct_stock->execute([$item['qty'], $item['product_id']]);
         }
 
         // Clear the cart ONLY if items were ordered from the cart (not Buy Now)
