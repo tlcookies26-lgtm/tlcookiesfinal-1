@@ -92,6 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_product'])) {
     <title>Tender Loving Cookies - Add New Cookie</title>
     <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
     <link rel="stylesheet" href="../assets/css/styles.css" />
+    <link rel="stylesheet" href="../assets/css/admin_styles.css" />
     <style>        
         h1 {
             color: var(--cookie-chocolate);

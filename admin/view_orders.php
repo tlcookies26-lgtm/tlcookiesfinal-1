@@ -76,6 +76,7 @@ if (isset($_GET['delete_order'])) {
     <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="../assets/css/styles.css" />
+    <link rel="stylesheet" href="../assets/css/admin_styles.css" />
     <style>
         /* Order management specific styles */
         .title2 {
