@@ -1,3 +1,8 @@
+<?php
+if (!isset($user_id)) {
+    $user_id = $_SESSION['user_id'] ?? '';
+}
+?>
 <header class="header">
     <div class="flex">
         <a href="index.php" class="logo-container"><img src="../assets/images/tlc.jpg" class="logo"></a>
