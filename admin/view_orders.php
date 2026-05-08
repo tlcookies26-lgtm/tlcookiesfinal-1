@@ -55,6 +55,15 @@ if (isset($_GET['delete_order'])) {
     $check_order->execute([$delete_id]);
     
     if ($check_order->rowCount() > 0) {
+        // Restore stock for non-cancelled items before deleting
+        $fetch_items = $conn->prepare("SELECT product_id, qty, status FROM order_items WHERE order_id = ?");
+        $fetch_items->execute([$delete_id]);
+        while ($item = $fetch_items->fetch(PDO::FETCH_ASSOC)) {
+            if ($item['status'] !== 'cancelled') {
+                $conn->prepare("UPDATE products SET stock = stock + ? WHERE id = ?")->execute([$item['qty'], $item['product_id']]);
+            }
+        }
+
         $conn->prepare("DELETE FROM orders WHERE id = ?")->execute([$delete_id]);
         header("Location: view_orders.php?success_msg=" . urlencode("Order #$delete_id has been deleted successfully."));
     } else {
@@ -426,6 +435,17 @@ if (isset($_GET['delete_order'])) {
                     $new_status = $_POST['order_status'];
 
                     if ($new_status) {
+                        // If cancelling, restore stock — but only for items not already cancelled
+                        if ($new_status === 'cancelled') {
+                            $fetch_items = $conn->prepare("SELECT product_id, qty, status FROM order_items WHERE order_id = ?");
+                            $fetch_items->execute([$order_id]);
+                            while ($item = $fetch_items->fetch(PDO::FETCH_ASSOC)) {
+                                if ($item['status'] !== 'cancelled') {
+                                    $conn->prepare("UPDATE products SET stock = stock + ? WHERE id = ?")->execute([$item['qty'], $item['product_id']]);
+                                }
+                            }
+                        }
+
                         // Update order status in `order_items` table
                         $update_status_stmt = $conn->prepare("UPDATE order_items SET status = ? WHERE order_id = ?");
                         $update_status_stmt->execute([$new_status, $order_id]);
