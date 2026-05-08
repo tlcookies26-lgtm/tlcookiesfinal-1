@@ -226,6 +226,7 @@ body {
    ========================================================= */
 .table-container {
   overflow-x: auto;
+  color:#2C1810;
   padding: 1.25rem 1.75rem 1.75rem;
   -webkit-overflow-scrolling: touch;
 }
