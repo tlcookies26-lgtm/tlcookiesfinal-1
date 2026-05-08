@@ -221,12 +221,20 @@
         }
 
         .main {
+            height: calc(100vh - 80px);
             margin: 40px auto;
             padding: 30px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
             display: flex;
             flex-direction: column;
+            overflow: hidden;
+        }
+
+        .terms-container {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 8px;
         }
 
         .title {
