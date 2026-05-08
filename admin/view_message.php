@@ -71,11 +71,11 @@ if (isset($_GET['delete_testimonials'])) {
             <div class="table-container">
                 <table border="1">
                     <tr>
-                        <th style="color: 3df1f0e !important">ID</th>
-                        <th style="color: 3df1f0e !important">User ID</th>
-                        <th style="color: 3df1f0e !important">Feedback</th>
-                        <th style="color: 3df1f0e !important">Date</th>
-                        <th style="color: 3df1f0e !important">Action</th>
+                        <th style="color: #3df1f0e !important">ID</th>
+                        <th style="color: #3df1f0e !important">User ID</th>
+                        <th style="color: #3df1f0e !important">Feedback</th>
+                        <th style="color: #3df1f0e !important">Date</th>
+                        <th style="color: #3df1f0e !important">Action</th>
                     </tr>
                     <?php foreach ($messages as $message): ?>
                         <tr>
