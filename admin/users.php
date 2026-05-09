@@ -119,6 +119,7 @@ if (isset($_GET['demote_user']) && isset($_GET['level'])) {
             <h1>Users</h1>
             <div class="table-container">
                 <table border="1">
+                    <thead>
                     <tr>
                         <th>ID</th>
                         <th>Username</th>
@@ -129,6 +130,7 @@ if (isset($_GET['demote_user']) && isset($_GET['level'])) {
                         <th>Role</th>
 
                     </tr>
+                    </thead>
                     <?php foreach ($users as $user): ?>
                         <tr>
                             <td><?= htmlspecialchars($user['id']) ?></td>
