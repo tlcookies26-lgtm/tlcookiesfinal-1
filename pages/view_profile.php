@@ -18,34 +18,7 @@ $stmt->execute(['user_id' => $user_id]);
 // Fetch the result
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-// Handle profile picture upload
-$profile_picture = null;
-if (isset($_FILES['profile_picture']) && $_FILES['profile_picture']['error'] === UPLOAD_ERR_OK) {
-    $file_tmp = $_FILES['profile_picture']['tmp_name'];
-    $file_name = basename($_FILES['profile_picture']['name']);
-    $file_size = $_FILES['profile_picture']['size'];
-    $file_type = $_FILES['profile_picture']['type'];
 
-    // Validate file type and size
-    $allowed_types = ['image/jpeg', 'image/png', 'image/jpg'];
-    $max_size = 2 * 1024 * 1024; // 2MB
-
-    if (in_array($file_type, $allowed_types) && $file_size <= $max_size) {
-        $upload_dir = '../admin/uploads/profile_pictures/';
-        $file_path = $upload_dir . $id . '-' . $file_name;
-
-        // Move the uploaded file to the uploads directory
-        if (move_uploaded_file($file_tmp, $file_path)) {
-            $profile_picture = $file_path;
-        } else {
-            echo "Failed to upload profile picture.";
-            exit;
-        }
-    } else {
-        echo "Invalid file type or file size exceeds 2MB.";
-        exit;
-    }
-}
 
 
 if (isset($_POST['logout'])) {
@@ -100,7 +73,7 @@ $profile_picture_path = !empty($user['profile_picture']) ? '../' . $user['profil
                                     <button type="submit" name="update_profile_pic" class="btn">Upload</button>
                                 </div>
                             </label>
-                            </>
+                            </form>
                         </form>
                     </div>
                 </div>

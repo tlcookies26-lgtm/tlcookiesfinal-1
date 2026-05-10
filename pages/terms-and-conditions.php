@@ -196,7 +196,7 @@
 
             <p>If you have any questions or concerns about these Terms and
                 Conditions, please contact us at <a
-                    href="mailto:tlcookies@gmail.com">tlcookies@gmail.com</a>.
+                    href="mailto:tlcookies26@gmail.com">tlcookies26@gmail.com</a>.
             </p>
 
             <p><strong>Last Updated:</strong> April 8, 2025</p>

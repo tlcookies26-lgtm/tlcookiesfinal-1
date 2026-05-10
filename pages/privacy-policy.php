@@ -16,7 +16,7 @@
             <h1>Privacy Policy</h1>
         </div>
         <div class="terms-container" id="privacy-box">
-            <p>At BotaniTea Bliss, your privacy is very important to us. This Privacy Policy explains how we collect,
+            <p>At Tender Loving Cookies, your privacy is very important to us. This Privacy Policy explains how we collect,
                 use, disclose, and safeguard your information when you visit our website. By using our services, you
                 consent to the practices described in this policy.</p>
 
@@ -73,7 +73,7 @@
                 <li>Request information about how your data is being used.</li>
             </ul>
             <p>To exercise any of these rights, please contact us at <a
-                    href="mailto:botaniteabliss@gmail.com">botaniteabliss@gmail.com</a>.</p>
+                    href="mailto:tlcookies26@gmail.com">tlcookies26@gmail.com</a>.</p>
 
             <h2>7. Third-Party Links</h2>
             <p>Our website may contain links to third-party websites. We are not responsible for the privacy practices
@@ -93,7 +93,7 @@
             <h2>10. Contact Us</h2>
             <p>If you have any questions, concerns, or requests related to this Privacy Policy, please reach out to us
                 at:</p>
-            <p><strong>Email:</strong> <a href="mailto:botaniteabliss@gmail.com">botaniteabliss@gmail.com</a></p>
+            <p><strong>Email:</strong> <a href="mailto:tlcookies26@gmail.com">tlcookies26@gmail.com</a></p>
 
             <p><strong>Last Updated:</strong> April 8, 2025</p>
         </div>

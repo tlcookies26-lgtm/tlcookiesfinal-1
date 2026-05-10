@@ -596,10 +596,6 @@ if (isset($_POST['buy_now_modal'])) {
                                         ₱<?= number_format($price, 2); ?>
                                     <?php endif; ?>
                                 </p>
-                                <div>
-                                    <label>Qty:</label>
-                                    <input type="number" name="qty" required min="1" value="1" max="99" class="qty">
-                                </div>
                             </div>
                             
                             <button type="button" class="btn buy-now-btn" onclick="openBuyNowModal(<?= $fetch_products['id']; ?>, '<?= htmlspecialchars(addslashes($fetch_products['name'])); ?>', '<?= $fetch_products['images']; ?>', <?= $price; ?>, <?= $discounted_price; ?>)">Buy Now</button>

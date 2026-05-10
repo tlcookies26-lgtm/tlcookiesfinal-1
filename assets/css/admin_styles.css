@@ -365,7 +365,7 @@ table td span[style*="gray"] {
 .category-row,
 .products .box-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-rows: repeat(auto-fill, minmax(220px, 1fr));
   gap: 1.25rem;
 }
 
